@@ -4,7 +4,7 @@
 
 ## TOC
 
-- [ ] Stage 1: Game log
+- [x] Stage 1: Game log
 - [ ] Stage 2: Grader
 - [ ] Stage 3: Secret code
 - [ ] Stage 4: Game time!

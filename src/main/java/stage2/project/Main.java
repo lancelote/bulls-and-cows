@@ -35,13 +35,21 @@ class Game {
         return new Grade(bulls, cows);
     }
 
-    private static void printGrade(Grade grade) {
-        if (grade.bulls == 0 && grade.cows == 0) {
-            System.out.println("None");
+    private void printGrade(Grade grade) {
+        String gradeString;
+
+        if (grade.bulls != 0 && grade.cows != 0) {
+            gradeString = String.format("%d bull(s) and %d cow(s)", grade.bulls, grade.cows);
+        } else if (grade.bulls != 0) {
+            gradeString = String.format("%d bull(s)", grade.bulls);
+        } else if (grade.cows != 0) {
+            gradeString = String.format("%d cow(s)", grade.cows);
         } else {
-            System.out.printf("%d bulls and %d cows", grade.bulls, grade.cows);
-            System.out.println();
+            gradeString = "None";
         }
+
+        System.out.printf("Grade: %s. The secret code is %s.", gradeString, this.secret);
+        System.out.println();
     }
 
     void play() {

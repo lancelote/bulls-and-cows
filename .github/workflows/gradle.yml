@@ -21,3 +21,5 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Qodana - Code Inspection
+        uses: JetBrains/qodana-action@v1.0-eap

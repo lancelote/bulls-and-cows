@@ -2,15 +2,18 @@ package stage5.hw5;
 
 import java.util.*;
 
+class Seed {
+    int seedNum;
+    int seedMax;
+
+    public Seed(int seedNum, int seedMax) {
+        this.seedNum = seedNum;
+        this.seedMax = seedMax;
+    }
+}
+
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        int a = scanner.nextInt();
-        int b = scanner.nextInt();
-        int n = scanner.nextInt();
-        int k = scanner.nextInt();
-
+    public static Seed findMinMax(int a, int b, int n, int k) {
         Random random;
 
         int minSeed = a;
@@ -33,7 +36,20 @@ public class Main {
             }
         }
 
-        System.out.println(minSeed);
-        System.out.println(minSeedMaximum);
+        return new Seed(minSeed, minSeedMaximum);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int a = scanner.nextInt();
+        int b = scanner.nextInt();
+        int n = scanner.nextInt();
+        int k = scanner.nextInt();
+
+        Seed minSeed = findMinMax(a, b, n, k);
+
+        System.out.println(minSeed.seedNum);
+        System.out.println(minSeed.seedMax);
     }
 }

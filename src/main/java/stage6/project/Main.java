@@ -19,23 +19,46 @@ class Game {
     String secret;
 
     private static int getSecretLength() {
-        System.out.println("Please, enter the secret code's length:");
+        System.out.println("Input the length of the secret code:");
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
 
-    private static String getSecret(int secretLength) {
-        assert secretLength > 0 && secretLength <= 10;
+    private static int getSymbolsRangeLength() {
+        System.out.println("Input the number of possible symbols in the code:");
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
+    }
+
+    private static String getSymbolRange(int symbolsRangeLength, String[] allowedChars) {
+        if (symbolsRangeLength < 10) {
+            return "0-" + allowedChars[symbolsRangeLength - 1];
+        } else {
+            return "0-9, a-" + allowedChars[symbolsRangeLength - 1];
+        }
+    }
+
+    private static String getSecret(int secretLength, int symbolsRangeLength) {
+        assert secretLength > 0 && secretLength <= 36;
+        assert symbolsRangeLength > 0 && symbolsRangeLength <= 36;
+        assert symbolsRangeLength > secretLength;
 
         Random random = new Random();
         StringBuilder secret = new StringBuilder(secretLength);
+        String[] allowedChars = "0123456789abcdefghijklmnopqrstuvwxyz".split("");
 
         while (secret.length() < secretLength) {
-            String digit = String.valueOf(random.nextInt(10));
+            int randomIndex = random.nextInt(symbolsRangeLength);
+            String digit = allowedChars[randomIndex];
             if (secret.indexOf(digit) == -1) {
                 secret.append(digit);
             }
         }
+
+        String secretAsStars = "*".repeat(secretLength);
+        String symbolRange = getSymbolRange(symbolsRangeLength, allowedChars);
+        System.out.printf("The secret is prepared: %s (%s).", secretAsStars, symbolRange);
+        System.out.println();
 
         return secret.toString();
     }
@@ -79,15 +102,24 @@ class Game {
 
     void play() {
         String guess;
-        int secretLength = getSecretLength();
 
-        while (secretLength > 10) {
-            System.out.println("Error: secret length cannot be greater than 10");
+        int secretLength = getSecretLength();
+        while (secretLength > 36) {
+            System.out.println("Error: secret length cannot be greater than 36");
             secretLength = getSecretLength();
         }
 
-        secret = getSecret(secretLength);
+        int symbolsRangeLength = getSymbolsRangeLength();
+        while (symbolsRangeLength > 36 || symbolsRangeLength < secretLength) {
+            if (symbolsRangeLength > 36) {
+                System.out.println("Error: symbols range length cannot be greater than 36");
+            } else {
+                System.out.println("Error: symbols range length cannot be smaller than secret length");
+            }
+            symbolsRangeLength = getSymbolsRangeLength();
+        }
 
+        secret = getSecret(secretLength, symbolsRangeLength);
         System.out.println("Okay, let's start a game!");
 
         do {

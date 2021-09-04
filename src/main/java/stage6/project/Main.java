@@ -21,13 +21,32 @@ class Game {
     private static int getSecretLength() {
         System.out.println("Input the length of the secret code:");
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        int secretLength = scanner.nextInt();
+
+        while (secretLength > 36) {
+            System.out.println("Error: secret length cannot be greater than 36");
+            System.out.println("Input the length of the secret code:");
+            secretLength = scanner.nextInt();
+        }
+
+        return secretLength;
     }
 
-    private static int getSymbolsRangeLength() {
+    private static int getSymbolsRangeLength(int secretLength) {
         System.out.println("Input the number of possible symbols in the code:");
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextInt();
+        int symbolsRangeLength = scanner.nextInt();
+
+        while (symbolsRangeLength > 36 || symbolsRangeLength < secretLength) {
+            if (symbolsRangeLength > 36) {
+                System.out.println("Error: symbols range length cannot be greater than 36");
+            } else {
+                System.out.println("Error: symbols range length cannot be smaller than secret length");
+            }
+            System.out.println("Input the number of possible symbols in the code:");
+            symbolsRangeLength = scanner.nextInt();
+        }
+        return symbolsRangeLength;
     }
 
     private static String getSymbolRange(int symbolsRangeLength, String[] allowedChars) {
@@ -104,22 +123,9 @@ class Game {
         String guess;
 
         int secretLength = getSecretLength();
-        while (secretLength > 36) {
-            System.out.println("Error: secret length cannot be greater than 36");
-            secretLength = getSecretLength();
-        }
-
-        int symbolsRangeLength = getSymbolsRangeLength();
-        while (symbolsRangeLength > 36 || symbolsRangeLength < secretLength) {
-            if (symbolsRangeLength > 36) {
-                System.out.println("Error: symbols range length cannot be greater than 36");
-            } else {
-                System.out.println("Error: symbols range length cannot be smaller than secret length");
-            }
-            symbolsRangeLength = getSymbolsRangeLength();
-        }
-
+        int symbolsRangeLength = getSymbolsRangeLength(secretLength);
         secret = getSecret(secretLength, symbolsRangeLength);
+
         System.out.println("Okay, let's start a game!");
 
         do {
